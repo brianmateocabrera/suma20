@@ -75,22 +75,44 @@
             }
 
             .card-back {
+              display:flex;
+              flex-direction:column;
+              justify-content: center;
+              align-items:center;
                 border: clamp(3px, 1vw, 10px) solid white;
-                background-color: white;
-                background-image: repeating-linear-gradient(
-                        45deg,
-                        royalblue,
-                        transparent 1px,
-                        royalblue 0,
-                        transparent 0
-                    ),
-                    repeating-linear-gradient(
-                        -45deg,
-                        royalblue,
-                        transparent 1px,
-                        royalblue 0,
-                        transparent 0
-                    );
+                background-color: white;background-image:
+              repeating-linear-gradient(
+                  45deg,
+                  grey 0,
+                  silver 1px,
+                  transparent 1px,
+                  transparent 5px
+              ),
+              repeating-linear-gradient(
+                  -45deg,
+                  goldenrod 0,
+                  gold 1px,
+                  transparent 1px,
+                  transparent 5px
+              );
+
+            }
+
+            .card-back .logo {
+
+                width: 80%;
+                height: 18%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: rgba(255, 255, 255, 0.85);
+                padding: 4px 12px;
+                border:none;
+                font-family: "Great Vibes", cursive;
+                font-size: clamp(12px, 4vh, 24px);
+                font-weight:bold;
+                color: goldenrod;
+                text-align: center;
             }
 
             /* === Etiquetas de Cuenta === */
@@ -166,7 +188,7 @@
             #ui button,
             #boton-nextturn button,
             #btnNuevoJuegoModal {
-                border: 2px solid black;
+                border: 2px solid grey;
                 cursor: pointer;
                 border-radius: clamp(4px, 1.5vh, 8px);
                 box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3)
@@ -532,7 +554,7 @@
                     const opciones = Juego.encontrarCombinaciones(this.mesa);
                     const contenedor = document.getElementById("options");
                     contenedor.innerHTML =
-                        '<h1 style="color:white;">Opciones:</h1>';
+                        '<h3 style="color:white;">Opciones:</h3>';
 
                     if (opciones.length === 0) {
                         contenedor.innerHTML +=
@@ -574,4 +596,113 @@
                     seleccionadas = [],
                     onSelect
                 ) {
-          
+                    const zone = document.getElementById(id);
+                    zone.innerHTML = "";
+
+                    if (back && cards.length > 0) {
+                        if (id === "discardZone") {
+                            zone.appendChild(
+                                Juego.renderCard(
+                                    cards[cards.length - 1],
+                                    colorMap
+                                )
+                            );
+                        } else {
+                            const div = document.createElement("div");
+                            div.className = "card-back";
+
+                            const logo = document.createElement("div");
+                            logo.className = "logo";
+                            logo.textContent = "Suma20"; // Cambiá esto si usás una imagen
+
+                            div.appendChild(logo);
+                            zone.appendChild(div);
+                        }
+                    } else {
+                        cards.forEach((card, index) => {
+                            zone.appendChild(
+                                Juego.renderCard(
+                                    card,
+                                    colorMap,
+                                    index,
+                                    seleccionadas,
+                                    onSelect
+                                )
+                            );
+                        });
+                    }
+
+                    if (id !== "tableZone") {
+                        const labelDiv = document.createElement("div");
+                        labelDiv.className = "count-label";
+                        labelDiv.textContent = `${label}: ${cards.length}`;
+                        zone.appendChild(labelDiv);
+                    }
+                }
+
+                static renderCard(
+                    card,
+                    colorMap,
+                    index = null,
+                    seleccionadas = [],
+                    onSelect
+                ) {
+                    const div = document.createElement("div");
+                    div.className = "card";
+                    div.textContent = card.valor;
+                    const cssColor = colorMap[card.color];
+                    div.style.borderColor = cssColor;
+                    div.style.color = cssColor;
+                    if (index !== null) {
+                        div.dataset.index = index;
+                        if (seleccionadas.includes(index))
+                            div.classList.add("selected");
+                        div.onclick = () => onSelect(index);
+                    }
+                    return div;
+                }
+
+                static animarMovimientoCarta(origen, destino, callback) {
+                    const clone = origen.cloneNode(true);
+                    const rectO = origen.getBoundingClientRect();
+                    const rectD = destino.getBoundingClientRect();
+
+                    clone.classList.add("carta-animada");
+                    document.body.appendChild(clone);
+
+                    clone.style.left = `${rectO.left}px`;
+                    clone.style.top = `${rectO.top}px`;
+                    clone.style.width = `${rectO.width}px`;
+                    clone.style.height = `${rectO.height}px`;
+
+                    requestAnimationFrame(() => {
+                        clone.style.transform = `translate(${
+                            rectD.left - rectO.left
+                        }px, ${rectD.top - rectO.top}px)`;
+                    });
+
+                    setTimeout(() => {
+                        document.body.removeChild(clone);
+                        if (callback) callback();
+                    }, 500);
+                }
+            }
+
+            // Inicialización global
+            let juego;
+            function iniciarJuego() {
+                juego = new Juego();
+            }
+
+            function nextTurn() {
+                juego.siguienteTurno();
+            }
+
+            function cerrarModal() {
+                juego.cerrarModal();
+            }
+
+            iniciarJuego();
+        </script>
+    </body>
+</html>
