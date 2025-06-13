@@ -173,7 +173,7 @@ p {
 
 #ui-right {
     display: flex;
-    flex-direction: row;
+    align-items: flex-end;
     gap: clamp(3px, 0.8vh, 6px);
 }
 
