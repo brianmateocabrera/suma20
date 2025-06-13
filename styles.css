@@ -1,0 +1,294 @@
+/* === Reset global y box-sizing === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color: #004400;
+}
+
+/* === Fondo de Pantalla === */
+#fondo {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, #006400, #003300);
+    z-index: 0;
+}
+
+/* === Capas === */
+#capa-cartas {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+/* === Estilos de Cartas === */
+.card,
+.card-back {
+    width: clamp(80px, 10vh, 80px);
+    aspect-ratio: 10 / 16;
+    border-radius: clamp(6px, 1.5vh, 12px);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.card {
+    border: clamp(3px, 1vw, 10px) solid black;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(24px, 15vw, 80px);
+    font-weight: bold;
+    margin: clamp(3px, 1vh, 10px) 0 0;
+    transition: transform 0.3s;
+    user-select: none;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card.selected {
+    outline: clamp(2px, 0.5vh, 4px) solid gold;
+    transform: scale(1.1);
+}
+
+.card-back {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: clamp(3px, 1vw, 10px) solid white;
+    background-color: white;
+    background-image: repeating-linear-gradient(
+            45deg,
+            grey 0,
+            silver 1px,
+            transparent 1px,
+            transparent 5px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            goldenrod 0,
+            gold 1px,
+            transparent 1px,
+            transparent 5px
+        );
+}
+
+.card-back .logo {
+    width: 80%;
+    height: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.85);
+    padding: 4px 12px;
+    border: none;
+    font-family: "Great Vibes", cursive;
+    font-size: clamp(12px, 4vh, 24px);
+    font-weight: bold;
+    color: goldenrod;
+    text-align: center;
+}
+
+/* === Etiquetas de Cuenta === */
+.count-label {
+    margin-top: clamp(4px, 0.8vh, 10px);
+    font-size: clamp(12px, 2vh, 48px);
+    color: white;
+}
+
+/* === Zona de la Mesa === */
+#tableZone {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(6px, 3vh, 12px);
+    width: 100vw;
+    max-width: 608px;
+    margin: 0 auto;
+    z-index: 1;
+}
+
+h1 {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "Great Vibes", cursive;
+    font-size: clamp(48px, 15vw, 120px);
+    z-index: 0;
+}
+
+p {
+    font-size: clamp(16px, 2vh, 48px);
+    margin: clamp(2px, 0.5vh, 4px) 0;
+}
+
+/* === Barra Superior de UI === */
+#ui {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 608px;
+    height: clamp(160px, 22vh, 300px);
+    z-index: 2;
+    color: white;
+    background: rgba(0, 0, 0, 0.4);
+    padding: clamp(8px, 2vh, 20px) clamp(12px, 3vw, 30px);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: clamp(2px, 1vh, 6px);
+    box-sizing: border-box;
+}
+
+#ui-left,
+#deckZone,
+#discardZone {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 0.8vh, 6px);
+    align-items: flex-start;
+}
+
+#ui-right {
+    display: flex;
+    flex-direction: row;
+    gap: clamp(3px, 0.8vh, 6px);
+}
+
+/* === Botones generales === */
+#ui button,
+#boton-nextturn button,
+#btnNuevoJuegoModal {
+    border: 2px solid grey;
+    cursor: pointer;
+    border-radius: clamp(4px, 1.5vh, 8px);
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    background-color: goldenrod;
+    color: black;
+    transition:
+        background-color 0.3s,
+        color 0.3s,
+        transform 0.3s;
+    transition: background-color 0.2s ease;
+}
+
+#ui button:active,
+#boton-nextturn button:active,
+#btnNuevoJuegoModal:active {
+    background-color: gold;
+}
+
+#ui button {
+    margin: clamp(3px, 1vh, 6px) 0;
+    padding: clamp(6px, 1.8vh, 12px) clamp(12px, 3vw, 20px);
+}
+
+/* === Botón de Próximo Turno === */
+#boton-nextturn {
+    position: absolute;
+    bottom: clamp(50px, 5vh, 100px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+#boton-nextturn button {
+    padding: clamp(10px, 2.8vh, 14px) clamp(20px, 5vw, 30px);
+}
+
+/* === Opciones de Juego === */
+#options {
+    display: none;
+}
+
+/* === Modal de Fin de Juego === */
+#modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+}
+
+#modalContent {
+    background: #fff;
+    padding: clamp(20px, 5vh, 30px) clamp(30px, 8vw, 40px);
+    border-radius: clamp(8px, 2vh, 15px);
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    max-width: 90vw;
+}
+
+#modalContent h2 {
+    margin-top: 0;
+    color: seagreen;
+}
+
+#btnNuevoJuegoModal {
+    margin-top: clamp(12px, 2vh, 20px);
+    padding: clamp(10px, 2.4vh, 12px) clamp(20px, 5vw, 28px);
+    font-size: clamp(14px, 2.5vh, 18px);
+    border-radius: clamp(4px, 1.5vh, 8px);
+    animation: blink 1s infinite;
+}
+
+/* === Animaciones === */
+@keyframes blink {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes puntoAnotado {
+    0% {
+        transform: scale(2);
+    }
+    50% {
+        transform: scale(0.4);
+        color: gold;
+    }
+    100% {
+        transform: scale(2);
+        color: white;
+    }
+}
+
+#score.animated {
+    animation: puntoAnotado 0.5s ease;
+}
+
+.carta-animada {
+    position: absolute;
+    transition: transform 0.5s ease;
+    z-index: 1000;
+    pointer-events: none;
+}
