@@ -54,7 +54,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: clamp(24px, 25%, 80px);
+    font-size: clamp(24px, 5vh, 80px);
     font-weight: bold;
     margin: clamp(3px, 1vh, 10px) 0 0;
     transition: transform 0.3s;
