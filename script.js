@@ -69,23 +69,40 @@ class Juego {
     }
 
     siguienteTurno() {
-        if (this.mazo.cartas.length === 0) return;
+    if (this.mazo.cartas.length === 0) return;
 
-        const carta = this.mazo.sacarCarta();
-        this.mesa.push(carta);
-        this.actualizarPantalla();
+    const carta = this.mazo.sacarCarta();
 
-        setTimeout(() => {
-            const deckZone = document.getElementById("deckZone");
-            const tableZone = document.getElementById("tableZone");
-            const cartaMesa = tableZone.lastElementChild;
-            const cartaMazo = deckZone.querySelector(".card-back");
-            if (cartaMesa && cartaMazo)
-                Juego.animarMovimientoCarta(cartaMazo, cartaMesa);
-        }, 50);
+    // Obtener referencias del DOM
+    const deckZone = document.getElementById("deckZone");
+    const tableZone = document.getElementById("tableZone");
 
-        this.verificarFinJuego();
-    }
+    // Crear un contenedor invisible como destino temporal
+    const contenedorTemporal = document.createElement("div");
+    contenedorTemporal.classList.add("placeholder-carta");
+    tableZone.appendChild(contenedorTemporal);
+
+    // Obtener elementos reales para animar
+    const cartaMazo = deckZone.querySelector(".card-back");
+    const cartaMesa = contenedorTemporal;
+
+    // Agregar un pequeño delay (como en tu versión original)
+    setTimeout(() => {
+        if (cartaMesa && cartaMazo) {
+            Juego.animarMovimientoCarta(cartaMazo, cartaMesa, () => {
+                // 🔄 Solo después de la animación mostramos la carta real
+                this.mesa.push(carta);
+                this.actualizarPantalla();
+
+                // Eliminamos el placeholder
+                tableZone.removeChild(contenedorTemporal);
+
+                this.verificarFinJuego();
+            });
+        }
+    }, 50);
+}
+
 
     seleccionarCarta(index) {
         const i = this.seleccionadas.indexOf(index);
