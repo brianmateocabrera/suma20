@@ -294,3 +294,9 @@ p {
     z-index: 1000;
     pointer-events: none;
 }
+
+.placeholder-carta {
+    width: 100px; /* o el tamaño real de tu carta */
+    height: 150px;
+    visibility: hidden; /* invisible, pero ocupa lugar */
+}
