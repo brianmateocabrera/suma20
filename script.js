@@ -331,30 +331,48 @@ class Juego {
     }
 
     static animarMovimientoCarta(origen, destino, callback) {
-        const clone = origen.cloneNode(true);
-        const rectO = origen.getBoundingClientRect();
-        const rectD = destino.getBoundingClientRect();
+    const clone = origen.cloneNode(true);
 
-        clone.classList.add("carta-animada");
-        document.body.appendChild(clone);
+    const rectO = origen.getBoundingClientRect();
+    const rectD = destino.getBoundingClientRect();
 
-        clone.style.left = `${rectO.left}px`;
-        clone.style.top = `${rectO.top}px`;
-        clone.style.width = `${rectO.width}px`;
-        clone.style.height = `${rectO.height}px`;
+    // Estilos iniciales del clon
+    Object.assign(clone.style, {
+        position: 'absolute',
+        left: `${rectO.left}px`,
+        top: `${rectO.top}px`,
+        width: `${rectO.width}px`,
+        height: `${rectO.height}px`,
+        transition: 'transform 0.5s ease',
+        transform: 'translate(0px, 0px)',
+        zIndex: 1000,
+        pointerEvents: 'none',
+    });
 
+    // Opcional: añadir una clase por si querés más estilos
+    clone.classList.add("carta-animada");
+
+    document.body.appendChild(clone);
+
+    // ⚠️ Importante: usar doble frame para asegurar que el estilo se aplica antes de animar
+    requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-            clone.style.transform = `translate(${rectD.left - rectO.left}px, ${
-                rectD.top - rectO.top
-            }px)`;
+            const deltaX = rectD.left - rectO.left;
+            const deltaY = rectD.top - rectO.top;
+            clone.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
         });
+    });
 
-        setTimeout(() => {
-            document.body.removeChild(clone);
-            if (callback) callback();
-        }, 500);
-    }
+    // ✅ Esperar que la animación termine usando el evento 'transitionend'
+    const onEnd = () => {
+        clone.removeEventListener('transitionend', onEnd);
+        if (clone.parentNode) clone.parentNode.removeChild(clone);
+        if (callback) callback();
+    };
+
+    clone.addEventListener('transitionend', onEnd);
 }
+
 
 // Inicialización global
 let juego;
