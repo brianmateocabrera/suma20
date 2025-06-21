@@ -296,7 +296,9 @@ p {
 }
 
 .placeholder-carta {
-    width: 100px; /* o el tamaño real de tu carta */
-    height: 150px;
+    width: clamp(80px, 10vh, 80px);
+    aspect-ratio: 10 / 16;
+    border-radius: clamp(6px, 1.5vh, 12px);
+    
     visibility: hidden; /* invisible, pero ocupa lugar */
 }
