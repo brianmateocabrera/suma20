@@ -103,7 +103,7 @@ body {
     padding: 4px 12px;
     border: none;
     font-family: "Great Vibes", cursive;
-    font-size: clamp(12px, 4vh, 24px);
+    font-size: clamp(12px, 3vh, 24px);
     font-weight: bold;
     color: goldenrod;
     text-align: center;
@@ -134,7 +134,7 @@ h1 {
     left: 50%;
     transform: translate(-50%, -50%);
     font-family: "Great Vibes", cursive;
-    font-size: clamp(48px, 15vw, 120px);
+    font-size: clamp(48px, 15vh, 120px);
     z-index: 0;
 }
 
