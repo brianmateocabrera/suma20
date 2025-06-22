@@ -294,11 +294,3 @@ p {
     z-index: 1000;
     pointer-events: none;
 }
-
-.placeholder-carta {
-    width: clamp(80px, 10vh, 80px);
-    aspect-ratio: 10 / 16;
-    border-radius: clamp(6px, 1.5vh, 12px);
-    
-    visibility: hidden; /* invisible, pero ocupa lugar */
-}
